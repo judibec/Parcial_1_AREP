@@ -65,9 +65,11 @@ public class HttpServer {
                         outputLine = getHeader() + getClass(request);
                     }else if(requests.length==2){
                         outputLine = getHeader() + getInvoke(request);
+                    }else if(requests.length==4){
+                        outputLine = getHeader() + getUnaryInvoke(request);
                     }
                 }catch (Exception e){
-//                    outputLine = getHtml();
+                    e.printStackTrace();
                 }
             }else {
                 outputLine = getHtml();
@@ -150,9 +152,20 @@ public class HttpServer {
 
     public static String getInvoke(String invoke) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class<?> c = Class.forName(invoke.split(",")[0]);
+        System.out.println(invoke.split(",")[1]);
         Method m = c.getDeclaredMethod(invoke.split(",")[1], (Class<?>) null);
-        System.out.println(m.toString());
-        return m.toString();
+        System.out.println(m.getName().toString());
+        return m.getName().toString();
     }
+
+    public static String getUnaryInvoke(String invoke) throws ClassNotFoundException, NoSuchMethodException {
+        Class<?> c = Class.forName(invoke.split(",")[0]);
+        Method m = c.getDeclaredMethod(invoke.split(",")[1]);
+        String paramType = invoke.split(",")[2];
+        String paramValue= invoke.split(",")[3];
+        return "";
+    }
+
+
 
 }
